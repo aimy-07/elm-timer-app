@@ -3,7 +3,7 @@ body {
 }
 
 .clock {
-  position: absolute;
+  position: relative;
   width: 320px;
   height: 320px;
 }
@@ -125,4 +125,83 @@ body {
   height: 9px;
   transform: translate(-50%,-100%) translateY(-131px);
   opacity: 0.34;
+}
+
+
+
+.timer {
+  position: relative;
+  width: 320px;
+  top: 10px;
+}
+
+.timer_text {
+  position: absolute;
+  width: 320px;
+  font: 56px Avenir Next, Helvetica, Arial, sans-serif;
+  text-align: center;
+  top: 0px;
+  left: 0px;
+  color: white;
+}
+
+.timer_text.is-timeup {
+  color: red;
+}
+
+.timer_btn-container {
+  position: absolute;
+  width: 320px;
+  height: 34px;
+  top: 74px;
+  left: 0px;
+}
+
+.timer_plus-btn {
+  position: absolute;
+  width: 32px;
+  height: 22px;
+  top: 80px;
+  left: 56px;
+  cursor: pointer;
+}
+
+.timer_minus-btn {
+  position: absolute;
+  width: 32px;
+  height: 22px;
+  top: 78px;
+  left: 96px;
+  cursor: pointer;
+}
+
+.timer_start-stop-btn {
+  position: absolute;
+  width: 52px;
+  height: 22px;
+  line-height: 22px;
+  font: 16px Avenir Next, Helvetica, Arial, sans-serif;
+  text-align: center;
+  top: 81px;
+  left: 146px;
+  color: white;
+  cursor: pointer;
+}
+
+.timer_start-stop-btn.is-disabled {
+  color: gray;
+  cursor: default;
+}
+
+.timer_reset-btn {
+  position: absolute;
+  width: 52px;
+  height: 22px;
+  line-height: 22px;
+  font: 16px Avenir Next, Helvetica, Arial, sans-serif;
+  text-align: center;
+  top: 81px;
+  left: 208px;
+  color: white;
+  cursor: pointer;
 }
