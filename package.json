@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --mode development",
+    "build:prod": "webpack --mode=production",
     "start": "webpack-dev-server",
     "electron": "electron .",
     "watch": "webpack --watch --mode development ",
