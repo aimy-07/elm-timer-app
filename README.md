@@ -27,5 +27,5 @@ npm run electron
 npm run build:prod
 
 # Create app package (For mac)
-npx electron-packager . ElmTimerApp --platform=darwin --arch=x64 --overwrite
+npx electron-packager . ElmTimerApp --platform=darwin --arch=x64 --overwrite --icon=img/elm-timer-app.icns
 ```
