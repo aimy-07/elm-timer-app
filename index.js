@@ -22,7 +22,7 @@ app.on('ready', function() {
     const menu = Menu.buildFromTemplate(templateMenu);
     Menu.setApplicationMenu(menu);
 
-    const mainWindow = new BrowserWindow({
+    let mainWindow = new BrowserWindow({
         width: 340,
         height: 500,
     });
