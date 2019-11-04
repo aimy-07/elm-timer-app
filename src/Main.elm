@@ -1,4 +1,4 @@
-module Main exposing (..)
+port module Main exposing (..)
 
 import Browser
 import Html exposing (..)
@@ -69,13 +69,20 @@ update msg model =
 
                     else
                         model.timerState
+
+                cmd =
+                    if nextTimerState == TimeUp then
+                        playAlarmSound ()
+
+                    else
+                        Cmd.none
             in
             ( { model
                 | currentTime = Just time
                 , timerCount = nextTimerCount
                 , timerState = nextTimerState
               }
-            , Cmd.none
+            , cmd
             )
 
         AdjustTimeZone zone ->
@@ -122,7 +129,9 @@ update msg model =
             ( { model | timerState = nextTimerState }, Cmd.none )
 
         ClickedTimerResetBtn ->
-            ( { model | timerState = Setting, timerCount = 0 }, Cmd.none )
+            ( { model | timerState = Setting, timerCount = 0 }
+            , stopAlarmSound ()
+            )
 
 
 settableMaxTimerCount : Int
@@ -131,12 +140,26 @@ settableMaxTimerCount =
 
 
 
+-- PORTS
+
+
+port playAlarmSound : () -> Cmd msg
+
+
+port stopAlarmSound : () -> Cmd msg
+
+
+
 -- SUBSCRIPTIONS
 
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Time.every 1000 Tick
+    if model.timerState /= TimeUp then
+        Time.every 1000 Tick
+
+    else
+        Sub.none
 
 
 
