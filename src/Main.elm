@@ -47,8 +47,7 @@ type Msg
     | AdjustTimeZone Time.Zone
     | ClickedTimerCountIncrementBtn
     | ClickedTimerCountDecrementBtn
-    | ClickedTimerStartBtn
-    | ClickedTimerStopBtn
+    | ClickedTimerStartStopBtn
     | ClickedTimerResetBtn
 
 
@@ -104,11 +103,23 @@ update msg model =
             in
             ( { model | timerCount = nextTimerCount }, Cmd.none )
 
-        ClickedTimerStartBtn ->
-            ( { model | timerState = CountingDown }, Cmd.none )
+        ClickedTimerStartStopBtn ->
+            let
+                nextTimerState =
+                    case model.timerState of
+                        Setting ->
+                            CountingDown
 
-        ClickedTimerStopBtn ->
-            ( { model | timerState = Pause }, Cmd.none )
+                        CountingDown ->
+                            Pause
+
+                        Pause ->
+                            CountingDown
+
+                        TimeUp ->
+                            TimeUp
+            in
+            ( { model | timerState = nextTimerState }, Cmd.none )
 
         ClickedTimerResetBtn ->
             ( { model | timerState = Setting, timerCount = 0 }, Cmd.none )
@@ -272,19 +283,9 @@ viewTimer timerState timerCount =
     div [ class "timer" ]
         [ viewTimerText timerState timerCount
         , div [ class "timer_btn-container" ] []
-        , img
-            [ class "timer_plus-btn"
-            , src "./img/icon_btn_up.png"
-            , onClick ClickedTimerCountIncrementBtn
-            ]
-            []
-        , img
-            [ class "timer_minus-btn"
-            , src "./img/icon_btn_down.png"
-            , onClick ClickedTimerCountDecrementBtn
-            ]
-            []
-        , viewStartStopBtn timerState
+        , viewCountUpBtn timerState
+        , viewCountDownBtn timerState
+        , viewStartStopBtn timerState timerCount
         , div
             [ class "timer_reset-btn"
             , onClick ClickedTimerResetBtn
@@ -319,37 +320,86 @@ viewTimerText timerState timerCount =
         [ text timerCountText ]
 
 
-viewStartStopBtn : TimerState -> Html Msg
-viewStartStopBtn timerState =
-    case timerState of
-        Setting ->
-            div
-                [ class "timer_start-stop-btn"
-                , onClick ClickedTimerStartBtn
-                ]
-                [ text "START" ]
+viewCountUpBtn : TimerState -> Html Msg
+viewCountUpBtn timerState =
+    if timerState == Setting then
+        img
+            [ class "timer_plus-btn"
+            , src "./img/icon_btn_up.png"
+            , onClick ClickedTimerCountIncrementBtn
+            ]
+            []
 
-        CountingDown ->
-            div
-                [ class "timer_start-stop-btn"
-                , onClick ClickedTimerStopBtn
-                ]
-                [ text "STOP" ]
+    else
+        img
+            [ class "timer_plus-btn is-disabled"
+            , src "./img/icon_btn_up_disabled.png"
+            , disabled True
+            ]
+            []
 
-        Pause ->
-            div
-                [ class "timer_start-stop-btn"
-                , onClick ClickedTimerStartBtn
-                ]
-                [ text "START" ]
 
-        TimeUp ->
-            div
-                [ class "timer_start-stop-btn"
-                , class "is-disabled"
-                , disabled True
-                ]
-                [ text "START" ]
+viewCountDownBtn : TimerState -> Html Msg
+viewCountDownBtn timerState =
+    if timerState == Setting then
+        img
+            [ class "timer_minus-btn"
+            , src "./img/icon_btn_down.png"
+            , onClick ClickedTimerCountIncrementBtn
+            ]
+            []
+
+    else
+        img
+            [ class "timer_minus-btn is-disabled"
+            , src "./img/icon_btn_down_disabled.png"
+            , disabled True
+            ]
+            []
+
+
+viewStartStopBtn : TimerState -> Int -> Html Msg
+viewStartStopBtn timerState timerCount =
+    let
+        isDisabled =
+            case timerState of
+                Setting ->
+                    if timerCount /= 0 then
+                        False
+
+                    else
+                        True
+
+                CountingDown ->
+                    False
+
+                Pause ->
+                    False
+
+                TimeUp ->
+                    True
+
+        labelText =
+            if timerState == CountingDown then
+                "STOP"
+
+            else
+                "START"
+    in
+    if isDisabled then
+        div
+            [ class "timer_start-stop-btn"
+            , class "is-disabled"
+            , disabled True
+            ]
+            [ text labelText ]
+
+    else
+        div
+            [ class "timer_start-stop-btn"
+            , onClick ClickedTimerStartStopBtn
+            ]
+            [ text labelText ]
 
 
 

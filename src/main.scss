@@ -166,6 +166,10 @@ body {
   cursor: pointer;
 }
 
+.timer_plus-btn.is-disabled {
+  cursor: default;
+}
+
 .timer_minus-btn {
   position: absolute;
   width: 32px;
@@ -173,6 +177,10 @@ body {
   top: 78px;
   left: 96px;
   cursor: pointer;
+}
+
+.timer_minus-btn.is-disabled {
+  cursor: default;
 }
 
 .timer_start-stop-btn {
