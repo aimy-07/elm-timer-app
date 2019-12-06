@@ -368,7 +368,7 @@ viewCountDownBtn timerState =
         img
             [ class "timer_minus-btn"
             , src "./img/icon_btn_down.png"
-            , onClick ClickedTimerCountIncrementBtn
+            , onClick ClickedTimerCountDecrementBtn
             ]
             []
 
