@@ -155,11 +155,7 @@ port stopAlarmSound : () -> Cmd msg
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    if model.timerState /= TimeUp then
-        Time.every 1000 Tick
-
-    else
-        Sub.none
+    Time.every 1000 Tick
 
 
 
